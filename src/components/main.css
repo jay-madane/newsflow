@@ -1,0 +1,32 @@
+/* Main */
+#main {
+  padding: 20px 30px;
+  transition: all 0.3s;
+}
+
+.with-header {
+  margin-top: 60px; /* Space for the header when it's present */
+}
+
+.without-header {
+  margin-top: 20px; /* Default margin when header is not present */
+}
+
+/* Footer */
+#footer {
+  margin-top: 70px; /* Add space above the footer */
+  padding: 10px 30px; /* Ensure consistent padding */
+  transition: all 0.3s;
+}
+
+/* Adjust footer for smaller screens */
+@media (max-width: 1199px) {
+  #main {
+    padding: 20px;
+  }
+
+  #footer {
+    margin-top: 30px; /* Slightly less space above the footer on smaller screens */
+    padding: 10px; /* Consistent padding for smaller screens */
+  }
+}

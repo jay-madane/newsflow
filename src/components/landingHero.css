@@ -1,0 +1,62 @@
+.container {
+  max-width: 800px; /* Adjust max-width as per your design */
+  margin: auto;
+  padding: 20px;
+}
+
+.landing-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.typewriter-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(82, 82, 188); /* Define your primary text color */
+  margin-bottom: 20px;
+}
+
+.landing-text {
+  font-size: 1rem;
+  color: var(--secondary-color); /* Define your secondary text color */
+  line-height: 1.5;
+}
+
+.btn {
+  background-color: rgb(70, 70, 170);
+  /* border: none; */
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+}
+#start {
+  width: 200px;
+}
+
+.btn-gradient {
+  background: linear-gradient(
+    to right,
+    red,
+    blue
+  ); /* Define your gradient colors */
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .landing-title {
+    font-size: 5rem;
+  }
+  .typewriter-text {
+    font-size: 2rem;
+  }
+  .landing-text {
+    font-size: 1.5rem;
+  }
+  .btn {
+    padding: 12px 24px;
+    font-size: 1.4rem;
+  }
+}

@@ -1,0 +1,22 @@
+/* Header setting */
+.header {
+  transition: all 0.5s;
+  z-index: 997;
+  height: 60px;
+  box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+  background-color: #fff;
+  padding-left: 20px;
+  padding-right: 20px; /* Added padding right for spacing */
+}
+
+/* Search bar */
+.search-bar {
+  flex-shrink: 0; /* Prevents the search bar from growing */
+  margin-right: auto; /* Pushes the search bar to the left */
+}
+
+/* Nav specific styles */
+.header-nav {
+  flex-shrink: 0; /* Prevents the nav from growing */
+  margin-left: auto; /* Pushes the nav to the right */
+}

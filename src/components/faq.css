@@ -1,0 +1,67 @@
+/* FAQPage.css */
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.accordion-button {
+  background-color: #f8f9fa; /* Background color for accordion buttons */
+  color: #333; /* Text color for accordion buttons */
+  font-weight: bold;
+}
+
+.accordion-button:hover {
+  background-color: #e9ecef; /* Hover background color for accordion buttons */
+}
+
+.accordion-collapse {
+  background-color: #fff; /* Background color for accordion content */
+  border: 1px solid #ddd; /* Border color for accordion content */
+  border-radius: 5px; /* Border radius for accordion content */
+}
+
+.accordion-body {
+  padding: 10px 20px;
+}
+
+.accordion-header {
+  background-color: #e9ecef; /* Background color for accordion headers */
+  border: 1px solid #ddd; /* Border color for accordion headers */
+  border-radius: 5px; /* Border radius for accordion headers */
+  margin-bottom: 10px;
+}
+
+.accordion-item:first-of-type .accordion-header {
+  border-top-left-radius: 5px; /* Rounded top-left corner for first accordion header */
+  border-top-right-radius: 5px; /* Rounded top-right corner for first accordion header */
+}
+
+.accordion-item:last-of-type .accordion-header {
+  border-bottom-left-radius: 5px; /* Rounded bottom-left corner for last accordion header */
+  border-bottom-right-radius: 5px; /* Rounded bottom-right corner for last accordion header */
+}
+
+.accordion-item .accordion-header:focus {
+  box-shadow: none; /* Remove focus shadow from accordion headers */
+}
+
+.accordion-item .accordion-button::after {
+  /* content: "\f078"; FontAwesome icon (chevron down) */
+  float: right;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 15px;
+  font-size: 16px;
+}
+
+.accordion-item.collapsed .accordion-button::after {
+  content: "\f077"; /* FontAwesome icon (chevron right) for collapsed state */
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}
