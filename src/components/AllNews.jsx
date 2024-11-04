@@ -6,4 +6,3 @@ function AllNews() {
 }
 
 export default AllNews;
-// sk-proj-FjCtWRqat5ewt4BBorZdT3BlbkFJ0pcrxVvtySkUSPRixsZm
