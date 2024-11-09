@@ -47,14 +47,37 @@ function NavAvatar() {
 
       fetchUserDetails(); // Call the function to fetch user details
     }
-  }, []); // Run effect on component mount
+  }, []); 
 
-  // Fallback in case userDetails is not available
-  console.log(userDetails)
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch("https://newsflowservices.vercel.app/api/v1/users/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+        credentials: "include", // Include cookies with the request
+      });
+
+      if (response.ok) {
+        Cookies.remove("accessToken"); // Clear client-side access token
+        localStorage.removeItem("user"); // Clear user details from local storage
+        navigate("/login"); // Redirect to login page
+      } else {
+        console.error("Failed to logout:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+
+
   const userName = userDetails
     ? `${userDetails.fullName.charAt(0) || userDetails.fullName}. ${userDetails.fullName
         .split(" ")
-        .pop()}` // Format: A. Jaiswal
+        .pop()}` 
     : "User"; // Display "User" if details are not available
 
   const departmentName = userDetails
@@ -62,7 +85,7 @@ function NavAvatar() {
     : "DEPARTMENT"; // Fallback for department
 
   if (loading) {
-    return <div>Loading...</div>; // You can customize this loading state
+    return <div>Loading...</div>; 
   }
 
   return (
@@ -116,10 +139,13 @@ function NavAvatar() {
         </li>
 
         <li>
-          <a className="dropdown-item d-flex align-items-center" href="#">
+        <button
+            className="dropdown-item d-flex align-items-center"
+            onClick={handleSignOut}
+          >
             <i className="bi bi-box-arrow-right"></i>
             <span>Sign Out</span>
-          </a>
+          </button>
         </li>
       </ul>
     </li>
