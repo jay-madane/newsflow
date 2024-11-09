@@ -1,29 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import Cookies from "js-cookie";
 
 function ReportCharts() {
   const [data, setData] = useState({
-    series: [
-      {
-        name: "Positive",
-        data: [31, 40, 28, 51, 42, 82, 56],
-      },
-      {
-        name: "Negative",
-        data: [11, 14, 38, 57, 35, 62, 86],
-      },
-      {
-        name: "Neutral",
-        data: [11, 30, 68, 41, 32, 12, 16],
-      },
-    ],
+    series: [],
     options: {
       chart: {
-        // Corrected key
         height: 400,
         type: "area",
         toolbar: {
-          show: true, //toolbar settings
+          show: true,
         },
       },
       markers: {
@@ -40,7 +27,6 @@ function ReportCharts() {
         },
       },
       dataLabels: {
-        // Corrected key
         enabled: false,
       },
       stroke: {
@@ -50,7 +36,6 @@ function ReportCharts() {
       xaxis: {
         type: "datetime",
         categories: [
-          // Corrected to array
           "2018-09-19T00:00:00.000Z",
           "2018-09-19T01:30:00.000Z",
           "2018-09-19T02:30:00.000Z",
@@ -66,10 +51,54 @@ function ReportCharts() {
         },
       },
       theme: {
-        mode: "light", // This will apply a dark theme
+        mode: "light",
       },
     },
   });
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      const accessToken = Cookies.get("accessToken"); // Retrieve access token from cookies
+
+      if (!accessToken) {
+        console.error("Access token not found in cookies.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "https://newsflowservices.vercel.app/api/v1/news/getAreaChartData",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+          const formattedSeries = result.data.map((item) => ({
+            name: item.name.charAt(0).toUpperCase() + item.name.slice(1), // Capitalize name
+            data: item.data.map((value) => parseFloat(value).toFixed(3)), // Limit to 3 decimal places
+          }));
+
+          setData((prevData) => ({
+            ...prevData,
+            series: formattedSeries,
+          }));
+        } else {
+          console.error("Failed to fetch chart data:", result.message);
+        }
+      } catch (error) {
+        console.error("Error fetching chart data:", error);
+      }
+    };
+
+    fetchChartData();
+  }, []);
 
   return (
     <div>

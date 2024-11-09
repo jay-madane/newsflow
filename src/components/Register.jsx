@@ -7,6 +7,7 @@ function Register() {
   const [userDetails, setUserDetails] = useState({
     fullName: "",
     email: "",
+    username: "",
     password: "",
     confirmPassword: "",
     phoneNumber: "",
@@ -41,7 +42,7 @@ function Register() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Basic validation
@@ -59,22 +60,57 @@ function Register() {
     if (Object.keys(formErrors).length === 0) {
       setErrors({});
       setSubmitted(true);
-      console.log("Form submitted:", userDetails);
 
-      // Save new user details
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify({
-          email: userDetails.email,
-          password: userDetails.password,
-        })
-      );
+      // Create FormData object to handle file and text data
+      const formData = new FormData();
+      formData.append("avatar", userDetails.profileImage); // Append image file
+      formData.append("email", userDetails.email);
+      formData.append("fullName", userDetails.fullName);
+      formData.append("department", userDetails.department);
+      formData.append("password", userDetails.password);
+      formData.append("username", userDetails.username); // Example username
+      formData.append("mobile", userDetails.phoneNumber);
 
-      // Set success message and redirect to login after a delay
-      setSuccessMessage("Registration successful! Redirecting to login...");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000); // Redirect after 2 seconds
+      try {
+        // Make the POST request
+        const response = await fetch(
+          "https://newsflowservices.vercel.app/api/v1/users/register",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Store user details in localStorage for login
+          const userToStore = {
+            email: userDetails.email,
+            username: userDetails.username,
+            password: userDetails.password, // Storing plain password is not secure, consider using a hashed password or a token in a real application
+            fullName: userDetails.fullName,
+            phoneNumber: userDetails.phoneNumber,
+            department: userDetails.department,
+            profileImage: userDetails.profileImage,
+          };
+
+          localStorage.setItem("userDetails", JSON.stringify(userToStore)); // Save user details to localStorage
+
+          setSuccessMessage("Registration successful! Redirecting to login...");
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000); // Redirect after 2 seconds
+        } else {
+          // Handle error responses
+          const errorData = await response.json();
+          console.error("Error:", errorData);
+          setErrors({ server: "Registration failed. Please try again." });
+        }
+      } catch (error) {
+        // console.error("Request error:", error);
+        setErrors({ server: "An error occurred. Please try again." });
+      }
     } else {
       setErrors(formErrors);
     }
@@ -144,6 +180,22 @@ function Register() {
                   />
                   {errors.email && (
                     <small className="text-danger">{errors.email}</small>
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="username" className="form-label">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="username"
+                    name="username"
+                    value={userDetails.username}
+                    onChange={handleChange}
+                  />
+                  {errors.username && (
+                    <small className="text-danger">{errors.username}</small>
                   )}
                 </div>
                 <div className="mb-3">

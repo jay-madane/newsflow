@@ -1,6 +1,7 @@
 // Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import Cookies from "js-cookie"; // Import js-cookie
 import "./login.css";
 
 function Login() {
@@ -22,7 +23,7 @@ function Login() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Basic validation
@@ -31,20 +32,50 @@ function Login() {
     if (!userDetails.password) formErrors.password = "Password is required";
 
     if (Object.keys(formErrors).length === 0) {
+      setErrors({});
       setSubmitted(true);
       setLoginError(""); // Clear previous login errors
 
-      // Mock validation: Check if email and password match
-      const registeredUser = localStorage.getItem("userDetails");
-      if (registeredUser) {
-        const { email, password } = JSON.parse(registeredUser);
-        if (email === userDetails.email && password === userDetails.password) {
-          navigate("/dashboard"); // Redirect to dashboard if credentials match
+      try {
+        // Make the POST request to your backend
+        const response = await fetch(
+          "https://newsflowservices.vercel.app/api/v1/users/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: userDetails.email,
+              password: userDetails.password,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Extract user info, accessToken, and refreshToken from the response
+          const { user, accessToken, refreshToken } = data.data; // Destructure from data.data
+
+          // Set cookies for accessToken and refreshToken
+          Cookies.set("accessToken", accessToken, { expires: 7 }); // Set cookie to expire in 7 days
+          Cookies.set("refreshToken", refreshToken, { expires: 7 }); // Set cookie to expire in 7 days
+
+          // Optional: Store user information in local storage if needed
+          localStorage.setItem("authToken", accessToken); // Store access token in localStorage
+          localStorage.setItem("user", JSON.stringify(user)); // Store user information
+
+          // Redirect to dashboard
+          navigate("/dashboard");
         } else {
-          setLoginError("Invalid email or password"); // Set login error message
+          // Handle failed login
+          const errorData = await response.json();
+          setLoginError(errorData.message || "Invalid email or password"); // Display backend error message
         }
-      } else {
-        setLoginError("No registered user found"); // Set error if no user is found
+      } catch (error) {
+        console.error("Request error:", error);
+        setLoginError("An error occurred. Please try again.");
       }
     } else {
       setErrors(formErrors);
@@ -57,7 +88,6 @@ function Login() {
         <div className="col-md-9">
           <div className="card">
             <div className="card-body1">
-              {/* <h4 className="card-title">Login</h4> */}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -92,7 +122,7 @@ function Login() {
                   )}
                 </div>
                 <div className="d-flex flex-column align-items-center">
-                  <button type="submit" className="btn1  btn-gradient mb-2 p-2">
+                  <button type="submit" className="btn1 btn-gradient mb-2 p-2">
                     Login
                   </button>
                   <button
