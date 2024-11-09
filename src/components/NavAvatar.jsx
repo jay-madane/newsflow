@@ -5,6 +5,7 @@ import Cookies from "js-cookie"; // Make sure to import js-cookie if needed for 
 function NavAvatar() {
   const [userDetails, setUserDetails] = useState(null); // State to hold user details
   const [loading, setLoading] = useState(true); // State to handle loading state
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     // Check local storage for user details
