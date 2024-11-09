@@ -20,19 +20,19 @@ function Dashboard() {
             <div className="col-12">
               <Reports />
             </div>
-            <div className="col-12">
+            {/* <div className="col-12">
               <RecentSales />
-            </div>
-            <div className="col-12">
+            </div> */}
+            {/* <div className="col-12">
               <TopSelllings />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="col-lg-4">
-          <RecentActivity />
-          <BudgetReport />
+          {/* <RecentActivity />
+          <BudgetReport /> */}
           <WebTraffic />
-          <News />
+          {/* <News /> */}
         </div>
       </div>
     </section>
