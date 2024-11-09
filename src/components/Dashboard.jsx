@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./dashboard.css";
 import Reports from "./Reports";
 import RecentSales from "./RecentSales";

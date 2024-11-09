@@ -2,11 +2,16 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import "./allNews.css";
+import NewsFilter from "./NewsFilter";
 
 function AllNews() {
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Filter states
+  const [tonality, setTonality] = useState("");
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -58,14 +63,30 @@ function AllNews() {
     return "neutral";
   };
 
+  // Apply filters
+  const filteredNewsList = newsList.filter((newsItem) => {
+    const matchesTonality = tonality ? newsItem.tonality === tonality : true;
+    const matchesLanguage = language ? newsItem.language === language : true;
+    return matchesTonality && matchesLanguage;
+  });
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="all-news-container">
-      {newsList.map((newsItem) => (
+
+      {/* Filter component */}
+      <NewsFilter
+        tonality={tonality}
+        setTonality={setTonality}
+        language={language}
+        setLanguage={setLanguage}
+      />
+
+      {filteredNewsList.map((newsItem) => (
         <div key={newsItem._id} className="news-card">
-          <img
+          <iframe
             src={`https://news.google.com${newsItem.img.replace("/api", "")}`}
             alt={newsItem.title}
             className="news-image"

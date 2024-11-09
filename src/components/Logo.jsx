@@ -20,8 +20,7 @@ function Logo() {
   return (
     <div className="d-flex align-items-center justify-content-between">
       <a href="/dashboard" className="logo d-flex align-items-center">
-        {/* <img src="" alt=""/> */}
-        <span className="d-none d-lg-block">NewsFlow</span>
+        <img src="logo.png" alt="logo"/>
       </a>
       <i
         className="bi bi-list toggle-sidebar-btn"

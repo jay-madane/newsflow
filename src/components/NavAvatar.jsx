@@ -8,7 +8,7 @@ function NavAvatar() {
 
   useEffect(() => {
     // Check local storage for user details
-    const storedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const storedUserDetails = JSON.parse(localStorage.getItem("user"));
 
     if (storedUserDetails) {
       // If user details are found in local storage, set them to state
@@ -32,7 +32,7 @@ function NavAvatar() {
           if (response.ok) {
             const data = await response.json();
             setUserDetails(data.data); // Set the user details to state
-            localStorage.setItem("userDetails", JSON.stringify(data.data)); // Store in local storage for future use
+            localStorage.setItem("user", JSON.stringify(data.data)); // Store in local storage for future use
           } else {
             console.error("Failed to fetch user details:", response.statusText);
             setUserDetails(null); // Reset to null if there's an error
@@ -50,8 +50,9 @@ function NavAvatar() {
   }, []); // Run effect on component mount
 
   // Fallback in case userDetails is not available
+  console.log(userDetails)
   const userName = userDetails
-    ? `${userDetails.fullName.charAt(0)}. ${userDetails.fullName
+    ? `${userDetails.fullName.charAt(0) || userDetails.fullName}. ${userDetails.fullName
         .split(" ")
         .pop()}` // Format: A. Jaiswal
     : "User"; // Display "User" if details are not available

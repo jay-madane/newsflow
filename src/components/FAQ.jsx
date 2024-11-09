@@ -1,5 +1,3 @@
-// FAQ.jsx
-
 import React from "react";
 import "./faq.css"; // Import your CSS file for styling
 import faqData from "../data/faqData"; // Import faqData from external file

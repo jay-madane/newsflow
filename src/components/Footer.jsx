@@ -12,7 +12,7 @@ function Footer() {
         . All Rights Reserved
       </div>
       <div className="credits">
-        Made By <a href="#">Jay Madane | Aniket Jaiswal</a>
+        Crafted By <a href="https://github.com/jay-madane">Jay Madane</a> | <a href="https://github.com/Aniket2683">Aniket Jaiswal</a>
       </div>
     </div>
   );
